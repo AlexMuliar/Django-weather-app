@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    'https://young-cove-61152.herokuapp.com/',
+    'young-cove-61152.herokuapp.com',
 
 ]
 
