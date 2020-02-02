@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+
+    </style>
+</head>
+<body>
+    {% block navbar %}
+        {% include  'app/_items/navbar.html' %}
+    {% endblock %}
+    <div>
+        <form action="/history/" method="GET" class='form float-lg-left col-5 my-md-3'>
+            {% csrf_token %}
+            {{ form.filter.name }}
+            {{ form.filter.date_from }}
+            {{ form.filter.date_to }}
+            <button type="submit" class="btn btn-primary col-2 mx-sm-3 mb-2">Find</button>
+        </form>
+    </div>
+    <div>
+        <!-- Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}. -->
+        <table id='history' class="table table-striped my-md-3">
+            <thead class='thead-dark'>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">City</th>
+                    <th scope="col"></th>
+                    <th scope="col">Temperature &degC</th>
+                    <th scope="col">Wind</th>
+                    <th scope="col">Time</th>
+                </tr>
+            </thead>
+            {% for item in page_obj %}
+                <tr class="p-n5 border">
+                    <td >
+                        {{ item.id }}
+                    </td>
+                    <td >
+                        {{ item.city.name }}
+                    </td>
+                    <td>
+                        <img src="http://openweathermap.org/img/wn/{{ item.icon }}.png">
+                    </td>
+                    <td >
+                        {{ item.temp|floatformat }}
+                    </td>
+                    <td >
+                        {{ item.wind_speed }}m/s
+                    </td>
+                    <td >
+                        {{ item.date }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div class="pagination">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1{{ state }}">&laquo; first</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{ state }}">previous</a></li>
+                    {% endif %}
+            
+                    <li class="page-item active">
+                        <a class="page-link" href="#">
+                            {{ page_obj.number }}
+                        </a>
+                    </li>
+            
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{ state }}">next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{{ state }}">last &raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+    </div>
+</body>
+</html>

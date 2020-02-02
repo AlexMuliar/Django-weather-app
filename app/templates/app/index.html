@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.js"></script>
+     -->
+    <style>
+
+    </style>
+</head>
+<body>
+    {% block navbar %}
+        {% include  'app/_items/navbar.html' %}
+    {% endblock %}    
+    <div class="row my-md-5 mx-md-5">
+        <form action="/" method="POST" class='form-inline'>
+            {% csrf_token %}
+            {{ form.city.name }}
+            <button type="submit" class="btn btn-primary mb-2">Find</button>
+        </form>
+    </div>
+    <div class="col my-md-3 mx-md-5">
+    {% if error %}
+        {{ error }}
+    {% endif %}
+    {% if weather %}
+        <h3>{{ city }}</h3>
+        <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png">
+        <table >
+            <tr>
+                <td>Temperature</td><td> {{ weather.temp|floatformat }} &degC</td>
+            </tr>
+            <tr>
+                <td>Wind</td><td> {{ weather.wind_speed }}m/s, {{ weather.wind_degree }}&deg </td>
+            </tr>
+            <tr>
+                <td>Clouds</td><td> {{ weather.clouds }}</td>
+            </tr>
+            <tr>
+                <td>Icon</td><td> {{ weather.icon }}</td>
+            </tr>
+        </table>
+    {% endif %}
+    </div>
+    <!-- <script>
+            let options = {
+            url: function (params) {
+                let s = params.slice(0, 2).toLowerCase()
+                console.log(params)
+                return `/api/v1/cities/${s}`
+            },
+            getValue: function(element) {
+                return `${ element.name }, ${ element.country }`
+            },
+            list: {
+                match: {
+                enabled: true
+                },
+                showAnimation: {
+                    type: "fade"
+                },
+                hideAnimation: {
+                    type: "fade"
+                }
+            },
+        };
+
+        $("#cities").easyAutocomplete(options);
+    </script> -->
+</body>
+</html>
